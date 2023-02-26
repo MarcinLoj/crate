@@ -13,7 +13,7 @@ services:
     crate-api:
       depends_on:
         - mysql
-      build: ./api
+      build: ./code/api
       restart: unless-stopped
       env_file: ./.env
       ports:
@@ -29,7 +29,7 @@ services:
     crate-web-app:
       depends_on: 
         - crate-api
-      build: ./web
+      build: ./code/web
       restart: unless-stopped
       env_file: ./.env
       ports:
@@ -38,7 +38,7 @@ services:
       depends_on:
         - crate-api
       image: cypress
-      build: ./web/cypress
+      build: ./code/web/cypress
       command: npm cypress run --headless --config-file ./web/cypress/cypress.config.ts
       volumes:
         - ./e2e/cypress:/app/cypress
