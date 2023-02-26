@@ -6,7 +6,7 @@ jobs:
     steps:
     - checkout
     - run: docker-compose build
-    - run: docker-compose up --abort-on-container-exit --exit-code-from e2e
+    - run: docker-compose up --abort-on-container-exit --exit-code-from code/web/cypress
     - run: cat /web/cypress/results/output.xml
 workflows:
   build:

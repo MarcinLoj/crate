@@ -45,5 +45,5 @@ services:
       build: ./code/web/cypress
       command: npm cypress run --headless --config-file ./web/cypress/cypress.config.ts
       volumes:
-        - ./e2e/cypress:/app/cypress
-        - ./e2e/cypress.config.ts:/app/cypress.config.ts
+        - ./code/web/cypress:/app/cypress
+        - ./code/web/cypress/cypress.config.ts:/app/cypress.config.ts
