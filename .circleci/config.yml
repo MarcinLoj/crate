@@ -14,6 +14,5 @@ workflows:
   build:
     jobs:
     - build
-    - cypress/run:
-      record: true
+    - cypress/run
   version: 2.1
