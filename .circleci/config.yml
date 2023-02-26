@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  cypress: cypress-io/cypress@2
 jobs:
   build:
     machine:
@@ -12,4 +14,6 @@ workflows:
   build:
     jobs:
     - build
+    - cypress/run:
+      record: true
   version: 2.1

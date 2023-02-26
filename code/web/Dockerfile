@@ -1,8 +1,7 @@
 # syntax=docker/dockerfile:1
    
 FROM node:16-alpine
-WORKDIR /web
+RUN apk update && apk add bash
 COPY . .
 RUN yarn install
 CMD ["yarn", "start"]
-EXPOSE 3000

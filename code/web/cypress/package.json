@@ -3,14 +3,16 @@
     "version": "1.0.0",
     "description": "Cypress tests",
     "main": "index.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
     "keywords": [],
     "author": "MarcinLoj",
     "license": "ISC",
     "private": true,
-    "devDependencies": {
-      "cypress": "^12.3.0"
+    "scripts": {
+        "cy:run": "cypress run",
+        "test": "wait-on http://localhost:3000 cy:run"
+    },
+    "dependencies": {
+        "cypress": "^12.3.0",
+        "wait-on": "^7.0.1"
     }
-  }
+}

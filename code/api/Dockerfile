@@ -1,8 +1,7 @@
 # syntax=docker/dockerfile:1
 
 FROM node:16-alpine
-WORKDIR /api
+RUN apk update && apk add bash
 COPY package.json .
 COPY . .
 RUN yarn install
-CMD yarn start
