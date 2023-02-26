@@ -3,6 +3,7 @@ version: '3.8'
 services: 
     mysql:
       image: mysql:8.0
+      container_name: db
       restart: unless-stopped
       env_file: ./.env
       environment: 
@@ -11,6 +12,7 @@ services:
       ports:
         - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
     crate-api:
+      container_name: api
       depends_on:
         - mysql
       build: ./code/api
@@ -27,6 +29,7 @@ services:
       stdin_open: true
       tty: true
     crate-web-app:
+      container_name: web-app
       depends_on: 
         - crate-api
       build: ./code/web
@@ -35,6 +38,7 @@ services:
       ports:
         - $WEB_LOCAL_PORT:$WEB_DOCKER_PORT
     cypress:
+      container_name: e2e
       depends_on:
         - crate-api
       image: cypress
