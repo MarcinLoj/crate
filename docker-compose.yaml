@@ -1,0 +1,56 @@
+version: '3.8'
+
+services: 
+    mysql:
+      image: mysql:8.0
+      container_name: db
+      restart: unless-stopped
+      env_file: ./.env
+      environment: 
+        - MYSQL_ROOT_PASSWORD=$password
+        - MYSQL_DATABASE=$database
+      ports:
+        - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+    crate-api:
+      container_name: api
+      depends_on:
+        - mysql
+        - crate-web-app
+      build: ./code/api
+      restart: unless-stopped
+      env_file: ./.env
+      ports:
+        - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+      environment:
+        - DB_HOST=mysql
+        - DB_USER=$username
+        - DB_PASSWORD=$password
+        - DB_NAME=$database
+        - DB_PORT=$MYSQLDB_LOCAL_PORT
+      stdin_open: true
+      tty: true
+      volumes: 
+        - ./wait-for-it/wait-for-it.sh:/usr/local/bin/wait-for-it.sh
+      command: /usr/local/bin/wait-for-it.sh --timeout=120 mysql:$MYSQLDB_DOCKER_PORT -- ./setupdb.sh
+    crate-web-app:
+      container_name: web-app
+      build: ./code/web
+      restart: unless-stopped
+      env_file: ./.env
+      ports:
+        - $WEB_LOCAL_PORT:$WEB_DOCKER_PORT
+      #volumes: 
+        #- ./wait-for-it/wait-for-it.sh:/usr/local/bin/wait-for-it.sh
+      #command: /usr/local/bin/wait-for-it.sh --timeout=120 crate-api:$NODE_DOCKER_PORT
+    #cypress:
+    #  container_name: e2e
+    #  depends_on:
+    #    - crate-web-app
+    #    - mysql
+    #    - crate-api
+    #  image: cypress
+    #  build: ./code/web/cypress
+    #  volumes:
+    #    - ./code/web/cypress:/app/cypress
+    #    - ./code/web/cypress/cypress.config.js:/app/cypress.config.js
+    #  command: npm run test
